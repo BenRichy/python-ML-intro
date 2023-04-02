@@ -52,7 +52,16 @@ CommercePredict = lm.predict(CommerceFeatures_test)
 plt.scatter(CommerceTarget_test, CommercePredict)
 
 #evaluate the model by obtainting MAE, MSE, RMSE
-print(metrics.mean_absolute_error(CommerceFeatures_test, CommercePredict))
+print(metrics.mean_absolute_error(CommerceTarget_test, CommercePredict))
+print(metrics.mean_squared_error(CommerceTarget_test, CommercePredict))
+print(np.sqrt(metrics.mean_absolute_error(CommerceTarget_test, CommercePredict)))
 
-print(metrics.mean_squared_error(CommerceFeatures_test, CommercePredict))
-print(np.sqrt(metrics.mean_absolute_error(CommerceFeatures_test, CommercePredict)))
+#check the residuals
+sns.distplot((CommerceTarget_test-CommercePredict),bins=50)
+#normally distributed
+
+#show the coefficients 
+cdf = pd.DataFrame(lm.coef_, CommerceFeatures.columns, columns=['Coeff'])
+print(cdf)
+
+#more people spend more moeny on the app, so focus on that, but need to explore more
