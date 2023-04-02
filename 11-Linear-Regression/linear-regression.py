@@ -7,6 +7,8 @@ import seaborn as sns
 from siuba import * 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+
 
 
 data = pd.read_csv("USA_Housing.csv")
@@ -56,5 +58,28 @@ print(lm.coef_)
 cdf = pd.DataFrame(lm.coef_, HouseFeatures.columns, columns=['Coeff'])
 
 #cdf shows the increase in house price per unit increase in the variable
+
+
+#now predict the model
+HousePredictions = lm.predict(HouseFeatures_test)
+
+#can plot a scatter to show how close we are
+plt.scatter(HousePrices_test, HousePredictions)
+#histogram of the residuals
+sns.distplot((HousePrices_test-HousePredictions))
+#model appears to be normally distributed, which is reasonable
+
+
+#3 common evaluation metrics we can use are:
+#Mean absolute error (MAE) - average error
+#Mean Squared error (MSE) - 'punishes large errors', hence more useful
+#Root mean squared error (RMSE) - makes the error interpretable in the same units as y
+
+#following importing metrics from sklearn, calc the absolute error
+metrics.mean_absolute_error(HousePrices_test, HousePredictions)
+metrics.mean_squared_error(HousePrices_test, HousePredictions)
+np.sqrt(metrics.mean_absolute_error(HousePrices_test, HousePredictions))
+
+
 
 
